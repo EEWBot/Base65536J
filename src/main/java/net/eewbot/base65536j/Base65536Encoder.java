@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 public class Base65536Encoder {
     Base65536Encoder() {}
 
-    private static final int[] CODES = {
+    static final int[] CODES = {
             13312, 13568, 13824, 14080, 14336, 14592, 14848, 15104,
             15360, 15616, 15872, 16128, 16384, 16640, 16896, 17152,
             17408, 17664, 17920, 18176, 18432, 18688, 18944, 19200,
