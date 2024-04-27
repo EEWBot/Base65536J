@@ -48,9 +48,10 @@ public class Base65536Encoder {
     }
 
     public int encode(byte[] src, byte[] dst) {
-        byte[] bytes = encode(src);
-        System.arraycopy(src, 0, bytes, 0, bytes.length);
-        return bytes.length;
+        byte[] result = encode(src);
+        if (dst.length < result.length) throw new IllegalArgumentException("Destination array is too small to encode.");
+        System.arraycopy(result, 0, dst, 0, result.length);
+        return result.length;
     }
 
     public ByteBuffer encode(ByteBuffer buffer) {
