@@ -1,5 +1,7 @@
 package net.eewbot.base65536j;
 
+import net.eewbot.base65536j.exception.BufferTooSmallException;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -49,7 +51,7 @@ public class Base65536Encoder {
 
     public int encode(byte[] src, byte[] dst) {
         byte[] result = encode(src);
-        if (dst.length < result.length) throw new IllegalArgumentException("Destination array is too small to encode.");
+        if (dst.length < result.length) throw new BufferTooSmallException(result.length, dst.length);
         System.arraycopy(result, 0, dst, 0, result.length);
         return result.length;
     }
