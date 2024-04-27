@@ -56,15 +56,7 @@ public class Base65536Decoder {
         if (src.isEmpty()) return new byte[0];
 
         int srcCodePointCount = src.codePointCount(0, src.length());
-        byte[] buffer;
-        {
-            int lastCodePoint = src.codePointAt(src.length() - 1);
-
-            Integer leastByte = TABLE.get(lastCodePoint - (lastCodePoint & ((1 << 8) - 1)));
-            if (leastByte == null) throw new IllegalBase65536TextException(src.length(), lastCodePoint);
-
-            buffer = new byte[leastByte == 256 ? srcCodePointCount * 2 - 1 : srcCodePointCount * 2];
-        }
+        byte[] buffer = new byte[calcBufferLength(src)];
 
         AtomicInteger atomicI = new AtomicInteger();
         src.codePoints().forEachOrdered(codePoint -> {
