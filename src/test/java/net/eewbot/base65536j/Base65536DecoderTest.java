@@ -75,13 +75,13 @@ class Base65536DecoderTest {
             {
                 String name = textFile.getName();
                 int periodIndex = name.lastIndexOf('.');
-                fileName = name.substring(0, periodIndex - 1);
+                fileName = name.substring(0, periodIndex);
             }
 
             Optional<File> binaryFile = binaries.stream().filter(file -> {
                 String name = file.getName();
                 int periodIndex = name.lastIndexOf('.');
-                return name.substring(0, periodIndex - 1).equals(fileName);
+                return name.substring(0, periodIndex).equals(fileName);
             }).findFirst();
             if (!binaryFile.isPresent()) throw new RuntimeException("Can't find pair file.");
 
