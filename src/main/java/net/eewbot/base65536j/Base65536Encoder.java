@@ -66,14 +66,14 @@ public class Base65536Encoder {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < src.length; i += 2) {
-            int b1 = src[i];
-            int b2;
+            int mostByte = Byte.toUnsignedInt(src[i]);
+            int leastByteIndex;
             if (i + 1 < src.length) {
-                b2 = src[i + 1];
+                leastByteIndex = Byte.toUnsignedInt(src[i + 1]);
             } else {
-                b2 = 256;
+                leastByteIndex = 256;
             }
-            builder.appendCodePoint(CODES[b2] + b1);
+            builder.appendCodePoint(CODES[leastByteIndex] + mostByte);
         }
 
         return builder.toString();
