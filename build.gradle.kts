@@ -72,7 +72,12 @@ publishing {
                 description.set(rootProject.description)
                 url.set("https://github.com/EEWBot/Base65536J")
 
-                licenses {}
+                licenses {0
+                    license {
+                        name.set("The MIT License")
+                        url.set("https://opensource.org/license/mit")
+                    }
+                }
 
                 developers {
                     developer {
