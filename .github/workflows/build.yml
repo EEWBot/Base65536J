@@ -1,4 +1,5 @@
 name: Build
+
 on:
   pull_request:
     paths:
@@ -8,9 +9,11 @@ on:
       - 'gradlew'
       - 'gradlew.bat'
       - '*.gradle.kts'
+
   push:
     branches:
       - master
+
   workflow_dispatch:
     inputs:
       publish:
@@ -20,8 +23,10 @@ on:
         type: boolean
         required: true
         default: false
+
 concurrency:
   group: ${{ github.workflow }}
+
 jobs:
   build:
     name: Build library
