@@ -1,5 +1,13 @@
 name: Build
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/build.yml'
+      - 'src/**'
+      - 'gradle/**'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - '*.gradle.kts'
   push:
     branches:
       - master
