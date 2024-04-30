@@ -40,7 +40,9 @@ class Base65536DecoderTest {
     @ParameterizedTest
     @MethodSource("successCaseProvider")
     void success(String testCase, byte[] expected) {
-        Assertions.assertArrayEquals(expected, Base65536.getDecoder().decode(testCase));
+        byte[] actual = Base65536.getDecoder().decode(testCase);
+        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertEquals(expected.length, actual.length);
     }
 
     static List<Arguments> successCaseProvider() throws IOException {

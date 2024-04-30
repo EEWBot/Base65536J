@@ -19,10 +19,11 @@ public class Base65536EncoderTest {
     @ParameterizedTest
     @MethodSource("successCaseProvider")
     void success(byte[] testCase, String expected) {
-        Assertions.assertArrayEquals(
-                Base65536.getEncoder().encode(testCase),
-                expected.getBytes(StandardCharsets.UTF_8)
-        );
+        byte[] expectedBytes = expected.getBytes(StandardCharsets.UTF_8);
+        byte[] actual = Base65536.getEncoder().encode(testCase);
+
+        Assertions.assertArrayEquals(expectedBytes, actual);
+        Assertions.assertEquals(expectedBytes.length, actual.length);
     }
 
     static List<Arguments> successCaseProvider() throws IOException {
