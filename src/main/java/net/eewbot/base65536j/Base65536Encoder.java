@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 public class Base65536Encoder {
     Base65536Encoder() {}
 
+    static final int PAD = 5376;
     static final int[] CODES = {
         0x3400, 0x3500, 0x3600, 0x3700, 0x3800, 0x3900, 0x3a00, 0x3b00,
         0x3c00, 0x3d00, 0x3e00, 0x3f00, 0x4000, 0x4100, 0x4200, 0x4300,
@@ -41,8 +42,7 @@ public class Base65536Encoder {
         0x26600, 0x26700, 0x26800, 0x26900, 0x26a00, 0x26b00, 0x26c00, 0x26d00,
         0x26e00, 0x26f00, 0x27000, 0x27100, 0x27200, 0x27300, 0x27400, 0x27500,
         0x27600, 0x27700, 0x27800, 0x27900, 0x27a00, 0x27b00, 0x27c00, 0x27d00,
-        0x27e00, 0x27f00, 0x28000, 0x28100, 0x28200, 0x28300, 0x28400, 0x28500,
-        5376
+        0x27e00, 0x27f00, 0x28000, 0x28100, 0x28200, 0x28300, 0x28400, 0x28500
     };
 
     public byte[] encode(byte[] src) {
@@ -63,20 +63,22 @@ public class Base65536Encoder {
     }
 
     public String encodeToString(byte[] src) {
-        StringBuilder builder = new StringBuilder();
+        if (src.length == 0) return "";
 
-        for (int i = 0; i < src.length; i += 2) {
+        int[] codePoints = new int[src.length / 2 + src.length % 2];
+        int i = 0;
+
+        for (; i < src.length - 2; i += 2) {
             int mostByte = Byte.toUnsignedInt(src[i]);
-            int leastByteIndex;
-            if (i + 1 < src.length) {
-                leastByteIndex = Byte.toUnsignedInt(src[i + 1]);
-            } else {
-                leastByteIndex = 256;
-            }
-            builder.appendCodePoint(CODES[leastByteIndex] + mostByte);
+            int leastByteIndex = Byte.toUnsignedInt(src[i + 1]);
+            codePoints[i / 2] = CODES[leastByteIndex] + mostByte;
         }
 
-        return builder.toString();
+        int mostByte = Byte.toUnsignedInt(src[i]);
+        int leastByte = i + 1 < src.length ? CODES[Byte.toUnsignedInt(src[i + 1])] : PAD;
+        codePoints[i / 2] = leastByte + mostByte;
+
+        return new String(codePoints, 0, codePoints.length);
     }
 
     public OutputStream wrap(OutputStream os) {

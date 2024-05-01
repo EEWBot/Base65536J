@@ -25,10 +25,13 @@ public class Base65536Decoder {
         int srcCodePointCount = src.codePointCount(0, src.length());
         int offset = src.offsetByCodePoints(0, srcCodePointCount -1);
         int lastCodePoint = src.codePointAt(offset);
-        Integer leastByte = TABLE.get(lastCodePoint - (lastCodePoint & 0xFF));
-        if (leastByte == null) throw new IllegalBase65536TextException(src.length(), lastCodePoint);
+        int codeBlock = lastCodePoint - (lastCodePoint & 0xff);
 
-        return leastByte == 256 ? srcCodePointCount * 2 - 1 : srcCodePointCount * 2;
+        Integer leastByte = TABLE.get(codeBlock);
+        if (leastByte == null && codeBlock != Base65536Encoder.PAD)
+            throw new IllegalBase65536TextException(src.length(), lastCodePoint);
+
+        return codeBlock == Base65536Encoder.PAD ? srcCodePointCount * 2 - 1 : srcCodePointCount * 2;
     }
 
     public byte[] decode(byte[] src) {
@@ -63,12 +66,14 @@ public class Base65536Decoder {
         src.codePoints().forEachOrdered(codePoint -> {
             int i = atomicI.getAndIncrement();
             int mostByte = codePoint & 0xFF;
+            int codeBlock = codePoint - mostByte;
 
-            Integer leastByte = TABLE.get(codePoint - mostByte);
-            if (leastByte == null) throw new IllegalBase65536TextException(i + 1, codePoint);
+            Integer leastByte = TABLE.get(codeBlock);
+            if (leastByte == null && codeBlock != Base65536Encoder.PAD)
+                throw new IllegalBase65536TextException(i + 1, codePoint);
 
             buffer[i * 2] = (byte) mostByte;
-            if (leastByte != 256) {
+            if (codeBlock != Base65536Encoder.PAD) {
                 buffer[i * 2 + 1] = leastByte.byteValue();
             } else if (i != srcCodePointCount -1) {
                 throw new IllegalBase65536TextException("Base65536 sequence exists after padding byte.");
