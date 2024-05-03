@@ -2,6 +2,7 @@ plugins {
     id("java")
     `maven-publish`
     signing
+    id("me.champeau.jmh") version "0.7.2"
 }
 
 group = "net.eewbot.base65536j"
@@ -54,6 +55,20 @@ tasks {
 
     test {
         useJUnitPlatform()
+    }
+
+    jmh {
+        jmhVersion = "1.37"
+
+        warmupIterations = 3
+        warmup = "5s"
+        iterations = 3
+        timeOnIteration = "5s"
+        fork = 5
+
+        forceGC = true
+        resultFormat = "JSON"
+        failOnError = true
     }
 }
 
