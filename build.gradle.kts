@@ -2,7 +2,7 @@ plugins {
     id("java")
     `maven-publish`
     signing
-    id("me.champeau.jmh") version "0.7.2"
+    id("me.champeau.jmh") version "0.7.3"
 }
 
 group = "net.eewbot.base65536j"
