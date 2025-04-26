@@ -40,6 +40,10 @@ tasks {
         dependsOn("includeReadmeAndLicense")
     }
 
+    javadoc {
+        dependsOn("includeReadmeAndLicense")
+    }
+
     compileTestJava {
         dependsOn("includeReadmeAndLicense")
     }
