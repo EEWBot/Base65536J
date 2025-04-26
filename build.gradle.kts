@@ -2,7 +2,7 @@ plugins {
     id("java")
     `maven-publish`
     signing
-    id("org.danilopianini.publish-on-central") version "8.0.6"
+    id("org.jreleaser") version "1.17.0"
     id("me.champeau.jmh") version "0.7.3"
 }
 
@@ -122,9 +122,18 @@ publishing {
     }
 }
 
-publishOnCentral {
-    mavenCentral.user.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
-    mavenCentral.password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))
+jreleaser {
+    deploy {
+        maven {
+            mavenCentral {
+                create("sonatype") {
+                    setActive("ALWAYS")
+                    url.set("https://central.sonatype.com/api/v1/publisher")
+                    stagingRepository("target/staging-deploy")
+                }
+            }
+        }
+    }
 }
 
 signing {
