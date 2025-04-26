@@ -133,6 +133,7 @@ jreleaser {
             mavenCentral {
                 create("sonatype") {
                     setActive("ALWAYS")
+                    snapshotSupported.set(true)
                     url.set("https://central.sonatype.com/api/v1/publisher")
                     stagingRepository("target/staging-deploy")
                     username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
