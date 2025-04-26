@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '8'
+          java-version: '11'
           cache: gradle
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
@@ -62,8 +62,7 @@ jobs:
       - name: Publish to Maven Central
         if: ${{ github.ref == 'refs/heads/master' || inputs.publish }}
         run: |
-          ./gradlew jreleaserConfig
-          ./gradlew jreleaserFullRelease
+          ./gradlew publishToMavenCentralPortal
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
