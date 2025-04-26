@@ -31,14 +31,9 @@ tasks {
         }
     }
 
-    create<Jar>("sourcesJar") {
-        destinationDirectory.set(rootProject.layout.buildDirectory.file("libs").get().asFile)
-
-        archiveClassifier.set("sources")
-
-        from(sourceSets.main.get().allSource)
-        from(processResources.get().outputs)
-        from(getByName("includeReadmeAndLicense").outputs)
+    java {
+        withSourcesJar()
+        withJavadocJar()
     }
 
     jar {
@@ -80,7 +75,6 @@ publishing {
             version = rootProject.version.toString()
 
             from(components.getByName("java"))
-            artifact(tasks.getByName("sourcesJar"))
 
             pom {
                 name.set(artifactId)
