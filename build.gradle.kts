@@ -123,6 +123,11 @@ publishing {
 }
 
 jreleaser {
+    release {
+        github {
+            token.set("EMPTY")
+        }
+    }
     deploy {
         maven {
             mavenCentral {
@@ -130,6 +135,8 @@ jreleaser {
                     setActive("ALWAYS")
                     url.set("https://central.sonatype.com/api/v1/publisher")
                     stagingRepository("target/staging-deploy")
+                    username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
+                    password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))
                 }
             }
         }

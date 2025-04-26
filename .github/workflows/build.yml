@@ -56,8 +56,14 @@ jobs:
         run: ./gradlew publish
         env:
           GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
-          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           SIGNING_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           SIGNING_KEY_ID: ${{ secrets.GPG_KEY_ID }}
           SIGNING_KEY_PASSWORD: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Publish to Maven Central
+        if: ${{ github.ref == 'refs/heads/master' || inputs.publish }}
+        run: |
+          ./gradlew jreleaserConfig
+          ./gradlew jreleaserFullRelease
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
