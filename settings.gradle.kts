@@ -1,1 +1,1 @@
-rootProject.name = "Base65536J"
+rootProject.name = "base65536j"
