@@ -53,7 +53,7 @@ jobs:
           retention-days: 30
       - name: Publish
         if: ${{ github.ref == 'refs/heads/master' || inputs.publish }}
-        run: ./gradlew publish jreleaserDeploy
+        run: ./gradlew publish jreleaserDeploy --stacktrace
         env:
           GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_USERNAME }}
