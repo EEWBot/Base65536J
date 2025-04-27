@@ -138,6 +138,7 @@ jreleaser {
                     snapshotSupported.set(true)
                     sign.set(false)
                     url.set("https://maven.pkg.github.com/EEWBot/Base65536J")
+                    snapshotUrl.set("https://maven.pkg.github.com/EEWBot/Base65536J")
                     stagingRepository("build/staging-deploy")
                     username.set("EEWBot")
                     password.set(System.getenv("GPR_KEY"))
@@ -146,8 +147,8 @@ jreleaser {
                 create("sonatype-snapshot") {
                     active.set(Active.SNAPSHOT)
                     snapshotSupported.set(true)
-                    sign.set(true)
-                    url.set("https://central.sonatype.com/repository/maven-snapshots/")
+                    sign.set(false)
+                    snapshotUrl.set("https://central.sonatype.com/repository/maven-snapshots/")
                     stagingRepository("build/staging-deploy")
                     username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
                     password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))
