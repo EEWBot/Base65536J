@@ -116,6 +116,14 @@ publishing {
 
     repositories {
         maven {
+            url = uri("https://maven.pkg.github.com/EEWBot/Base65536J")
+            credentials {
+                username = "EEWBot"
+                password = System.getenv("GPR_KEY")
+            }
+        }
+
+        maven {
             name = "Local"
             url = uri(project.layout.buildDirectory.dir("staging-deploy"))
         }
@@ -132,34 +140,9 @@ jreleaser {
 
     deploy {
         maven {
-            nexus2 {
-                create("gpr") {
-                    active.set(Active.ALWAYS)
-                    snapshotSupported.set(true)
-                    sign.set(false)
-                    url.set("https://maven.pkg.github.com/EEWBot/Base65536J")
-                    snapshotUrl.set("https://maven.pkg.github.com/EEWBot/Base65536J")
-                    stagingRepository("build/staging-deploy")
-                    username.set("EEWBot")
-                    password.set(System.getenv("GPR_KEY"))
-                }
-
-                create("sonatype-snapshot") {
-                    active.set(Active.SNAPSHOT)
-                    snapshotSupported.set(true)
-                    sign.set(false)
-                    url.set("EMPTY")
-                    snapshotUrl.set("https://central.sonatype.com/repository/maven-snapshots/")
-                    stagingRepository("build/staging-deploy")
-                    username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
-                    password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))
-                }
-            }
-
             mavenCentral {
-                create("sonatype-release") {
+                create("sonatype") {
                     active.set(Active.RELEASE)
-                    snapshotSupported.set(false)
                     sign.set(false)
                     url.set("https://central.sonatype.com/api/v1/publisher")
                     stagingRepository("build/staging-deploy")
