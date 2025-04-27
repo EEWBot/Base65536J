@@ -126,11 +126,7 @@ publishing {
         maven {
             if (!project.version.toString().endsWith("SNAPSHOT")) {
                 url = uri(project.layout.buildDirectory.dir("staging-deploy"))
-            }
-        }
-
-        maven {
-            if (project.version.toString().endsWith("SNAPSHOT")) {
+            } else {
                 url = uri("https://central.sonatype.com/repository/maven-snapshots/")
                 credentials {
                     username = System.getenv("MAVEN_CENTRAL_USERNAME")
