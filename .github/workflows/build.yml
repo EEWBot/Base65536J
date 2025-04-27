@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '8'
           cache: gradle
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
@@ -53,7 +53,7 @@ jobs:
           retention-days: 30
       - name: Publish
         if: ${{ github.ref == 'refs/heads/master' || inputs.publish }}
-        run: ./gradlew publish publishToMavenCentralPortal --stacktrace
+        run: ./gradlew publish jreleaserDeploy
         env:
           GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_USERNAME }}

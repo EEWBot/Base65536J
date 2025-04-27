@@ -1,11 +1,10 @@
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
+import org.jreleaser.model.Active
 
 plugins {
     id("java")
     `maven-publish`
     signing
-    id("tech.yanand.maven-central-publish") version "1.3.0"
+    id("org.jreleaser") version "1.17.0"
     id("me.champeau.jmh") version "0.7.3"
 }
 
@@ -122,16 +121,40 @@ publishing {
                 password = System.getenv("GPR_KEY")
             }
         }
+
+        maven {
+            name = "Local"
+            url = uri(project.layout.buildDirectory.dir("staging-deploy"))
+        }
     }
 }
 
-mavenCentral {
-    @OptIn(ExperimentalEncodingApi::class)
-    authToken.set(
-        Base64.Default.encode(
-            "${System.getenv("MAVEN_CENTRAL_USERNAME")}:${System.getenv("MAVEN_CENTRAL_PASSWORD")}".encodeToByteArray()
-        )
-    )
+jreleaser {
+    signing {
+        active.set(Active.NEVER)
+    }
+
+    release {
+        github {
+            enabled.set(false)
+            token.set("EMPTY")
+        }
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                create("sonatype") {
+                    active.set(Active.ALWAYS)
+                    snapshotSupported.set(true)
+                    url.set("https://central.sonatype.com/api/v1/publisher")
+                    stagingRepository("build/staging-deploy")
+                    username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
+                    password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))
+                }
+            }
+        }
+    }
 }
 
 signing {
