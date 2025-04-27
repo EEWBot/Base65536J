@@ -123,17 +123,17 @@ publishing {
             }
         }
 
-        maven {
-            if (!project.version.toString().endsWith("SNAPSHOT")) {
-                url = uri(project.layout.buildDirectory.dir("staging-deploy"))
-            } else {
-                url = uri("https://central.sonatype.com/repository/maven-snapshots/")
-                credentials {
-                    username = System.getenv("MAVEN_CENTRAL_USERNAME")
-                    password = System.getenv("MAVEN_CENTRAL_PASSWORD")
-                }
-            }
-        }
+//        maven {
+//            if (!project.version.toString().endsWith("SNAPSHOT")) {
+//                url = uri(project.layout.buildDirectory.dir("staging-deploy"))
+//            } else {
+//                url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+//                credentials {
+//                    username = System.getenv("MAVEN_CENTRAL_USERNAME")
+//                    password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+//                }
+//            }
+//        }
     }
 }
 
