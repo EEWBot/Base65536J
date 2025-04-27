@@ -130,10 +130,6 @@ publishing {
 }
 
 jreleaser {
-    signing {
-        active.set(Active.NEVER)
-    }
-
     release {
         github {
             enabled.set(false)
@@ -147,6 +143,7 @@ jreleaser {
                 create("sonatype") {
                     active.set(Active.ALWAYS)
                     snapshotSupported.set(true)
+                    sign.set(false)
                     url.set("https://central.sonatype.com/api/v1/publisher")
                     stagingRepository("build/staging-deploy")
                     username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
