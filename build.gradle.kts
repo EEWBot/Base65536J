@@ -123,7 +123,7 @@ publishing {
             }
         }
 
-        if (!rootProject.version.toString().endsWith("SNAPSHOT")) {
+        if (!project.version.toString().endsWith("SNAPSHOT")) {
             maven {
                 name = "Local"
                 url = uri(project.layout.buildDirectory.dir("staging-deploy"))
