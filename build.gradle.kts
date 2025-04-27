@@ -148,6 +148,7 @@ jreleaser {
                     active.set(Active.SNAPSHOT)
                     snapshotSupported.set(true)
                     sign.set(false)
+                    url.set("EMPTY")
                     snapshotUrl.set("https://central.sonatype.com/repository/maven-snapshots/")
                     stagingRepository("build/staging-deploy")
                     username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))
