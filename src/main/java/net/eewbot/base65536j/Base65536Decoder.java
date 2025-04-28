@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class implements a decoder for decoding byte data using the Base65536 encoding scheme follows the
+ * <a href="https://github.com/qntm/base65536">original Base65536 implementation</a>.<br>
+ * Instances of {@link Base65536Decoder} class are safe for use by multiple concurrent threads.<br>
+ * Unless otherwise noted, passing a null argument to a method of this class will cause a {@link NullPointerException}
+ * to be thrown.
+ */
 public class Base65536Decoder {
     Base65536Decoder() {}
 
@@ -34,10 +41,29 @@ public class Base65536Decoder {
         return codeBlock == Base65536Encoder.PAD ? srcCodePointCount * 2 - 1 : srcCodePointCount * 2;
     }
 
+    /**
+     * Decodes all bytes from the input byte array using the {@link Base65536} encoding scheme, writing the results into
+     * a newly-allocated output byte array. The returned byte array is of the length of the resulting bytes.
+     * @param src the byte array to decode
+     * @return A newly-allocated byte array containing the decoded bytes.
+     * @throws IllegalBase65536TextException if src is not in valid Base65536 scheme.
+     */
     public byte[] decode(byte[] src) {
         return decode(new String(src, StandardCharsets.UTF_8));
     }
 
+    /**
+     * Decodes all bytes from the input byte array using the {@link Base65536} encoding scheme, writing the results into
+     * the given output byte array, starting at offset 0.<br>
+     * It is the responsibility of the invoker of this method to make sure the output byte array dst has enough space
+     * for decoding all bytes from the input byte array. No bytes will be written to the output byte array if the output
+     * byte array is not big enough.
+     * @param src the byte array to decode
+     * @param dst the output byte array
+     * @return The number of bytes written to the output byte array
+     * @throws IllegalBase65536TextException if src is not in valid Base65536 scheme.
+     * @throws BufferTooSmallException if dst does not have enough space for decoding all input bytes.
+     */
     public int decode(byte[] src, byte[] dst) {
         String srcString = new String(src, StandardCharsets.UTF_8);
         int bufferLength = calcBufferLength(srcString);
@@ -50,12 +76,29 @@ public class Base65536Decoder {
         return bufferLength;
     }
 
+    /**
+     * Decodes all bytes from the input byte buffer using the {@link Base65536} encoding scheme, writing the results
+     * into a newly-allocated ByteBuffer.<br>
+     * Unpon return, the source buffer's position will be updated to its limit; its limit will not have been changed.
+     * The returned output buffer's position will be zero and its limit will be the number of resulting decoded bytes.
+     * IllegalBase65536TextException is thrown if the input buffer is not in valid Base65536 encoding scheme.
+     * The Position of the input buffer will not be advanced in this case.
+     * @param buffer the ByteBuffer to decode
+     * @return A newly-allocated byte buffer containing the decoded bytes
+     * @throws IllegalBase65536TextException if src is not in valid Base65536 scheme.
+     */
     public ByteBuffer decode(ByteBuffer buffer) {
         byte[] src = new byte[buffer.remaining()];
         buffer.get(src);
         return ByteBuffer.wrap(decode(src));
     }
 
+    /**
+     * Decodes a Base65536 encoded String into a newly-allocated byte array using the {@link Base65536} encoding scheme.
+     * @param src the string to decode
+     * @return A newly-allocated byte array containing the decoded bytes.
+     * @throws IllegalBase65536TextException if src is not in valid Base65536 scheme
+     */
     public byte[] decode(String src) {
         if (src.isEmpty()) return new byte[0];
 

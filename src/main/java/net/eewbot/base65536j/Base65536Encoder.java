@@ -6,6 +6,13 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This class implements an encoder for encoding byte data using the Base65536 encoding scheme follows the
+ * <a href="https://github.com/qntm/base65536">original Base65536 implementation</a>.<br>
+ * Instances of {@link Base65536Encoder} class are safe for use by multiple concurrent threads.<br>
+ * Unless otherwise noted, passing a null argument to a method of this class will cause a {@link NullPointerException}
+ * to be thrown.
+ */
 public class Base65536Encoder {
     Base65536Encoder() {}
 
@@ -45,10 +52,27 @@ public class Base65536Encoder {
         0x27e00, 0x27f00, 0x28000, 0x28100, 0x28200, 0x28300, 0x28400, 0x28500
     };
 
+    /**
+     * Encodes all bytes from the specified byte array into a newly-allocated byte array using the {@link Base65536}
+     * encoding scheme. The returned byte array is of the length of the resulting bytes.
+     * @param src the byte array to encode
+     * @return A newly-allocated byte array containing the resulting encoded bytes.
+     */
     public byte[] encode(byte[] src) {
         return encodeToString(src).getBytes(StandardCharsets.UTF_8);
     }
 
+    /**
+     * Encodes all bytes from the specified byte array using the {@link Base65536} encoding scheme,
+     * writing the resulting bytes to the given output byte array, starting at offset 0.<br>
+     * It is the responsibility of the invoker of this method to make sure the output byte array dst has enough space
+     * for encoding all bytes from the input byte array. No bytes will be written to the output byte array if the output
+     * byte array is not big enough.
+     * @param src the byte array to encode
+     * @param dst the output byte array
+     * @return The number of bytes written to the output byte array
+     * @throws BufferTooSmallException if dst does not have enough space for encoding all input bytes.
+     */
     public int encode(byte[] src, byte[] dst) {
         byte[] result = encode(src);
         if (dst.length < result.length) throw new BufferTooSmallException(result.length, dst.length);
@@ -56,12 +80,25 @@ public class Base65536Encoder {
         return result.length;
     }
 
+    /**
+     * Encodes all remaining bytes from the specified byte buffer into a newly-allocated ByteBuffer using the
+     * {@link Base65536} encoding scheme. Upon return, the source buffer's position will be updated to its limit;
+     * its limit will not have been changed. The returned output buffer's position will be zero and its limit will be
+     * the number of resulting encoded bytes.
+     * @param buffer the source ByteBuffer to encode
+     * @return A newly-allocated byte buffer containing the encoded bytes.
+     */
     public ByteBuffer encode(ByteBuffer buffer) {
         byte[] src = new byte[buffer.remaining()];
         buffer.get(src);
         return ByteBuffer.wrap(encode(src));
     }
 
+    /**
+     * Encodes the specified byte array into a String using the {@link Base65536} encoding scheme.<br>
+     * @param src the byte array to encode
+     * @return A string containing the resulting Base65536 encoded characters.
+     */
     public String encodeToString(byte[] src) {
         if (src.length == 0) return "";
 
@@ -81,6 +118,12 @@ public class Base65536Encoder {
         return new String(codePoints, 0, codePoints.length);
     }
 
+    /**
+     * Not yet implemented.
+     * @param os Not yet implemented.
+     * @return Not yet implemented.
+     * @throws UnsupportedOperationException Always throw this because not yet implemented.
+     */
     public OutputStream wrap(OutputStream os) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
