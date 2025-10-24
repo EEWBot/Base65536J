@@ -47,7 +47,7 @@ jobs:
       - name: Do build
         run: ./gradlew build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: ./build/libs/*
           retention-days: 30
