@@ -41,7 +41,7 @@ jobs:
           java-version: '8'
           cache: gradle
       - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
+        uses: gradle/actions/wrapper-validation@v5
       - name: Add permission to Gradle wrapper
         run: chmod +x gradlew
       - name: Do build
