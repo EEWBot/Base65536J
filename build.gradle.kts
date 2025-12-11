@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "net.eewbot"
-version = "0.1.0"
+version = "0.2.0"
 description = "An implementation of base65536 encoding in Java with Base64 like API."
 
 repositories {

@@ -4,6 +4,11 @@ An implementation of [base65536](https://github.com/qntm/base65536) encoding in 
 
 ## Release Notes
 
+### v0.2.0
+
+- Update some dependencies
+- Drop Java 16 and older
+
 ### v0.1.0
 
 - First release
