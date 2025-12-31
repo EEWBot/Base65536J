@@ -4,7 +4,7 @@ plugins {
     id("java")
     `maven-publish`
     signing
-    id("org.jreleaser") version "1.21.0"
+    id("org.jreleaser") version "1.22.0"
     id("me.champeau.jmh") version "0.7.3"
 }
 
