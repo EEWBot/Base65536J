@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
     signing
     id("org.jreleaser") version "1.23.0"
-    id("me.champeau.jmh") version "0.7.3"
+    id("me.champeau.jmh") version "0.7.4"
 }
 
 group = "net.eewbot"
